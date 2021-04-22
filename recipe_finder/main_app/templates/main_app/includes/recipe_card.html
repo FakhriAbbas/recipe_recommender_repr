@@ -1,0 +1,220 @@
+{% load math_extras %}
+{% load static %}
+
+<!-- image -->
+<div class="col-md-2">
+    {% if item.smallImageUrl %}
+        <img class="img-thumbnail" src={{item.smallImageUrl}} alt="My image">
+    {% else %}
+        <img class="img-thumbnail" src={% static "images/logo.png" %} alt="My image">
+    {% endif %}
+
+</div>
+
+<!-- Description -->
+<div class="col-md-{{column_width}}">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{{item.url}}" target="_blank"> <b>Recipe Name:</b> {{item.recipeName}} </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <b>Ingredients:</b>
+                {% for ingr in item.ingredients %}
+                    {{ingr}},
+                {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <b>Prepration time:</b> {{item.totalTimeInMinutes}} minutes
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {% if item.piquant_n %}
+                <a id="flavour-collapse-{{item.id}}" data-toggle="collapse" data-target="#flavour-collapse-{{item.id}}-{{model}}" recipe-id="{{item.id}}" >Recipe flavour [+]</a>
+            {% else %}
+                <a class="disabled">Recipe flavour (Not Available)</a>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            {% if item.calories_n %}
+                <a id="nutrition-collapse-{{item.id}}" data-toggle="collapse" data-target="#nutrition-collapse-{{item.id}}-{{model}}" recipe-id="{{item.id}}">Recipe Nutritional info [+]</a>
+            {% else %}
+                <a class="disabled">Recipe Nutritional info (Not Available)</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- falvour collapse panel -->
+    <div class="row">
+        <div class="col-md-12">
+            <div id="flavour-collapse-{{item.id}}-{{model}}" class="panel-collapse collapse">
+                <div class="row">
+                    <div class="col-md-2">
+                        <b>Spiciness:</b>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-danger" role="progressbar"
+                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{% widthratio item.piquant_n 1 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <b>Sourness:</b>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-warning" role="progressbar"
+                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{% widthratio item.sour_n 1 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <b>Saltiness:</b>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-info active" role="progressbar"
+                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{% widthratio item.salty_n 1 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <b>Sweetness:</b>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-success" role="progressbar"
+                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="background-color: green; width:{% widthratio item.sweet_n 1 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <b>Bitterness:</b>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-success" role="progressbar"
+                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="background-color: khaki; width:{% widthratio item.bitter_n 1 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <b>Meatness:</b>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="progress">
+                          <div class="progress-bar progress-bar" role="progressbar"
+                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{% widthratio item.meaty_n 1 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- nutrition collapse panel -->
+    <div class="row">
+            <div id="nutrition-collapse-{{item.id}}-{{model}}" class="panel-collapse collapse">
+                <div class="col-md-4">
+                    <div class="row">
+                        <b>CALORIES</b>
+                    </div>
+                    <div class="row">
+                        <div class="c100 p{{ item.calories_n|division_dv:"2000" }}">
+                            <span>{{ item.calories_n }}</span>
+                            <div class="slice">
+                                <div class="bar"></div>
+                                <div class="fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <b>SODIUM: </b>{{ item.sodiumContent_n }}mg
+                    </div>
+                    <div class="row">
+                        <div class="c100 p{{ item.sodiumContent_n|division_dv:"2383" }}">
+                            <span>{{ item.sodiumContent_n|division:"2383" }}% DV</span>
+                            <div class="slice">
+                                <div class="bar"></div>
+                                <div class="fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <b>Fat: </b>{{item.fatContent_n}}g
+                    </div>
+                    <div class="row">
+                        <div class="c100 p{{ item.fatContent_n|division_dv:"64" }}">
+                            <span>{{ item.fatContent_n|division:"64" }}% DV</span>
+                            <div class="slice">
+                                <div class="bar"></div>
+                                <div class="fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <b>PROTEIN: </b>{{ item.proteinContent_n }}g
+                    </div>
+                    <div class="row">
+                        <div class="c100 p{{ item.proteinContent_n|division_dv:"51" }}">
+                            <span>{{ item.proteinContent_n|division:"51" }}% DV</span>
+                            <div class="slice">
+                                <div class="bar"></div>
+                                <div class="fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <b>Carbs: </b>{{ item.carbohydrateContent_n }}g
+                    </div>
+                    <div class="row">
+                        <div class="c100 p{{ item.carbohydrateContent_n|division_dv:"295" }}">
+                            <span>{{ item.carbohydrateContent_n|division:"295" }}% DV</span>
+                            <div class="slice">
+                                <div class="bar"></div>
+                                <div class="fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <b>Fiber: </b>{{item.fiberContent_n}}g
+                    </div>
+                    <div class="row">
+                        <div class="c100 p{{ item.fiberContent_n|division_dv:"25" }}">
+                            <span>{{ item.fiberContent_n|division:"25" }}% DV</span>
+                            <div class="slice">
+                                <div class="bar"></div>
+                                <div class="fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+

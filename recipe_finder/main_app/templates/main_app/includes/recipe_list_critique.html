@@ -1,0 +1,36 @@
+{% for item in items %}
+
+<div class="row" style="background-color: #efefef;padding: .35em;">
+
+    {% include './recipe_card.html' with column_width=4 %}
+    <div class="col-md-1 text-left">
+            {% if item.meal_plan == 0 %}
+                <i id='add-to-plan-{{item.id}}' name='{{item.id}}' class="fas fa-tasks fa-2x de_select pointer_cursor" like=-1></i>
+            {% endif %}
+            {% if item.meal_plan == 1 %}
+                <i id='add-to-plan-{{item.id}}' name='{{item.id}}' class="fas fa-tasks fa-2x pointer_cursor like_color_select" like=-1></i>
+            {% endif %}
+
+            {% if item.dislike == 0 %}
+                <i id='tdown-{{item.id}}' name='{{item.id}}' class="far fa-thumbs-down fa-2x de_select pointer_cursor" like=0></i>
+            {% endif %}
+            {% if item.dislike == 1 %}
+                <i id='tdown-{{item.id}}' name='{{item.id}}' class="far fa-thumbs-down fa-2x pointer_cursor dis_like_color_select" like=0></i>
+            {% endif %}
+    </div>
+
+    <!-- critique -->
+    <div class="col-md-5">
+        <div class="row">
+            <a class="pointer_cursor"><div id="expl_more_{{item.id}}" recipe_id="{{item.id}}" name="{{item.recipeName}}"> Explore More <i class="fas fa-search"></i>  </div></a>
+        </div>
+        <div id="critique_panel_{{item.id}}">
+
+        </div>
+     </div>
+
+</div>
+   <hr>
+{% endfor %}
+
+

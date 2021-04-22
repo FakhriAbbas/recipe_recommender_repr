@@ -1,0 +1,44 @@
+{% load static %}
+{% load common_tools %}
+
+<div class="row">
+<div class="col-md-1">
+    <b>Search history:</b>
+</div>
+
+{% for key, value in search_items.items %}
+    <div class="col-md-1">
+        <div class="row" data-toggle="tooltip"
+                 title="Results similar to {{ value.recipe_name }}
+                        but with {{ value.direction }} {{ value.column_name_display }}
+                       "
+                 data-placement="bottom">
+            <div class="col-md-12">
+                {% if value.active == 1 %}
+                <div class="pointer_cursor bold"
+                     search_key="{{ key }}"
+                     id='search_link-{{ key }}'><a>Search result {{ key }}</a></div>
+                {% else %}
+                <div class="pointer_cursor "
+                     search_key="{{ key }}"
+                     id='search_link-{{ key }}'><a>Search result {{ key }}</a></div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+    {% empty %}
+        <div class="col-md-1">
+            <div class="row">
+                <img class="img-header" data-html="true" src='{% static "images/logo.png" %}' alt="My image" data-toggle="tooltip"
+                     data-placement="bottom">
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class='pointer_cursor'>Search result 1</div>
+                </div>
+            </div>
+        </div>
+{% endfor %}
+
+</div>

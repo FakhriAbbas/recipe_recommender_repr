@@ -1,0 +1,43 @@
+{% for item in items %}
+    <div class="row">
+    <!-- image -->
+    <div class="col-md-2">
+        <img class="img-header" src={{item.smallImageUrl}} alt="My image">
+    </div>
+    <!-- Description -->
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="{{item.url}}" target="_blank"> <b>Recipe Name:</b> {{item.recipeName}} </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <b>Ingredients:</b>
+                    {{item.ingredients}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <b>Prepration time:</b> {{item.totalTimeInMinutes}} minutes
+            </div>
+        </div>
+    </div>
+
+    <div class='feedback-section' id="{{item.id}}" >
+        <div class="col-md-4 text-left">
+            <i id='tup-{{item.id}}' class="far fa-thumbs-up fa-2x de_select" like=1></i>
+            <i id='tdown-{{item.id}}' class="far fa-thumbs-down fa-2x de_select" like=0></i>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2">
+        <!-- buffer -->
+    </div>
+    <div class="col-md-6">
+
+    </div>
+</div>
+    <hr>
+{% endfor %}

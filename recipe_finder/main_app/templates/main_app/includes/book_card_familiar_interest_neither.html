@@ -1,0 +1,44 @@
+{% load static %}
+
+<div class="col-md-12">
+    <div class="row align-items-center" style="height: 200px;">
+        {% if data.image_url == 'default' %}
+            <img class="card-img-top img-responsive" src="{% static 'images/book_PNG2120.png' %}">
+        {% endif %}
+
+        {% if data.image_url != 'default' %}
+            <img class="card-img-top img-responsive" src="{{ data.image_url }}"  style="height: 100%">
+        {% endif %}
+
+    </div>
+
+    <div class="row" style="height: 70px;">
+        <h5 class="card-title">{{ data.title|slice:"90" }}</h5>
+    </div>
+
+    <div class="row row justify-content-md-center" style="height: 120px;">
+        <p class="card-text" >{{ data.desc|slice:"150" }} ... <a id="load_more_link-{{data.ISBN}}" data-isbn="{{ data.ISBN }}">Load More</a>
+
+                <!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#flipFlop">-->
+                    <!--Click Me-->
+                <!--</button>-->
+            </p>
+    </div>
+
+    <div class="row" style="height: 50px;">
+        <div>
+            <label class=" form-check-label active">
+            <input class="form-check-input" type="radio" data-isbn="{{ data.ISBN }}" name="{{ cluster_id }}" id="interest" autocomplete="off" >
+                Interesting
+            </label>
+            <label class="  form-check-label">
+            <input class="form-check-input" type="radio" data-isbn="{{ data.ISBN }}" name="{{ cluster_id }}" id="familiar" autocomplete="off">
+                Familiar
+            </label>
+            <label class="  form-check-label">
+            <input class="form-check-input" type="radio" data-isbn="{{ data.ISBN }}" name="{{ cluster_id }}" id="neither" autocomplete="off">
+                Neither
+            </label>
+        </div>
+    </div>
+</div>

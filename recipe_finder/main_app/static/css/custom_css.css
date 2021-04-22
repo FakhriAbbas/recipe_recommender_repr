@@ -1,0 +1,75 @@
+.img-header{
+    height: 70px;
+}
+
+.img-thumbnail{
+    height: 120px;
+}
+
+.intro-text{
+    font-size: 18px;
+}
+
+.direction-text{
+    font-size: 16px;
+}
+
+.normal-text{
+    font-size: 14px;
+}
+
+.important-text{
+    color: #db0909;
+}
+
+hr{
+    height: 1px;
+    background-color: #87a5ae;
+    border: 5px;
+}
+
+.top-buffer { margin-top:60px; }
+.small-top-buffer { margin-top:10px; }
+
+.like_color_select{color: green}
+.de_select{color: black}
+.dis_like_color_select{color: red}
+.saturate { filter: saturate(3); }
+.invert { filter: invert(100%); }
+
+
+.up_arrow {color : green}
+.down_arrow {color : red}
+
+.pointer_cursor
+{
+    cursor: pointer;
+}
+
+.progress-bar-orange {
+      background-color: orange !important;
+}
+
+.bold { font-weight: bold; }
+
+/* The heart of the matter */
+
+.horizontal-scrollable > .row {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.horizontal-scrollable > .row > .col-xs-4 {
+    display: inline-block;
+    float: none;
+}
+
+.fixed
+{
+    width: 100%;
+    background-color: blue;
+    color: white;
+    padding: 10px;
+    position: fixed;
+}
+

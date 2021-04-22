@@ -1,0 +1,38 @@
+{% load static %}
+
+<div class="col-md-12">
+    <div class="row align-items-center">
+        <div class="col-md-4" style="height: 150px;">
+            {% if data.image_url == 'default' %}
+                <img class="card-img-top img-responsive" src="{% static 'images/book_PNG2120.png' %}">
+            {% endif %}
+
+            {% if data.image_url != 'default' %}
+                <img class="card-img-top img-responsive" src="{{ data.image_url }}"  style="height: 100%">
+            {% endif %}
+        </div>
+        <div class="col-md-8" style="height: 200px;">
+            <div class="row">
+                <p class="card-title"><b>{{ data.title|slice:"90" }}</b></p>
+            </div>
+            <div class="row">
+                <p class="card-title">{{ data.desc|slice:"150"}}... <a id="load_more_link-{{data.ISBN}}" data-isbn="{{ data.ISBN }}">Load More</a> </p>
+            </div>
+            <div class="row">
+                   <b>Would you like to read this book?</b>
+                <p>
+                    <label>
+                    <input class="form-check-input" type="radio" data-isbn="{{ data.ISBN }}" name="{{ data.cluster_id }}-{{data.ISBN}}" id="yes" autocomplete="off" >
+                        Yes
+                    </input>
+                    </label>
+                    <label>
+                    <input class="form-check-input" type="radio" data-isbn="{{ data.ISBN }}" name="{{ data.cluster_id }}-{{data.ISBN}}" id="no" autocomplete="off">
+                        No
+                    </input>
+                    </label>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

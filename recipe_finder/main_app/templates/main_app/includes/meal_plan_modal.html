@@ -1,0 +1,38 @@
+{% load static %}
+    <div id="modal_wrapper">
+            <!-- The modal -->
+            <div class="modal fade" id="meal_plan_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="modalLabel">
+                                <b><img src="{% static 'images/diet_plan_icon.png'%}" style="width: 45px">Meal plan list</b>
+                            </h4>
+                        </div>
+                        <div class="modal-body" style="height:650px;overflow:auto;">
+                                {% for item in items %}
+                                    <div id="model-recipe-{{item.id}}">
+                                        <div class="row" >
+                                            {% include './recipe_card.html' with column_width=6 model=1 %}
+                                            <a class="pointer_cursor" id="model_delete_{{item.id}}" item_id="{{item.id}}">
+                                                <div class="col-md-2">
+                                                    <i class="fas fa-trash-alt fa-lg dis_like_color_select"></i> Remove recipe
+                                                </div>
+                                            </a>
+
+                                        </div>
+                                        <hr>
+                                    </div>
+                                {% endfor %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+

@@ -1,0 +1,123 @@
+{% extends "main_app/base.html" %}
+{% load static %}
+
+{% block page_title %}
+  Part 2: Reflection on Session 2 of 3
+{% endblock %}
+
+{% block page_direction %}
+  <div class="row">
+    <span class="direction-text"><b>We would like to hear your feedback based on the recommended recipes:</b></span> <br>
+    <span class="direction-text">Please answer the following questions below. </span>
+  </div>
+{% endblock %}
+
+{% block content %}
+<hr>
+
+  <div class="row">
+    <!-- First question -->
+    <div>
+      <div class="row">
+        <span class="normal-text"> 1. Did you find the recipe you were looking for? </span>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q1_o1" name="q1" value="1">
+            Yes
+          </input>
+        </label>
+        </div>
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q1_o2" name="q1" value="1">
+            No
+          </input>
+        </label>
+        </div>
+
+      </div>
+    </div>
+    <!-- Second question -->
+    <div>
+      <div class="row top-buffer">
+        <span class="normal-text"> 2. Did you find new recipes ?</span>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q2_o1" name="q1" value="1">
+            Yes
+          </input>
+        </label>
+        </div>
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q2_o2" name="q1" value="1">
+            No
+          </input>
+        </label>
+        </div>
+      </div>
+    </div>
+    <!-- Third question -->
+    <div>
+      <div class="row top-buffer">
+        <span class="normal-text"> 3. Among the recipes you liked, are you willing to try one of them? </span>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q3_o1" name="q1" value="1">
+            Yes, All of them
+          </input>
+        </label>
+        </div>
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q3_o2" name="q1" value="1">
+            Some of them
+          </input>
+        </label>
+        </div>
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q3_o3" name="q1" value="1">
+            No
+          </input>
+        </label>
+        </div>
+      </div>
+    </div>
+    <!-- Fourth question -->
+    <div>
+      <div class="row top-buffer">
+        <span class="normal-text"> 4. Do you think recipes were similar to each other in each displayed list? </span>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+        <label>
+          <input type="radio"  id="q4_o1" name="q1" value="1">
+            Yes, recipes were similar with small variations in ingredients
+          </input>
+        </label>
+        </div>
+        <div class="col-md-12">
+        <label>
+          <input type="radio"  id="q4_o2" name="q1" value="1">
+            No, recipes were different from each other
+          </input>
+        </label>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+<hr>
+
+<div class="col-md-6 col-md-offset-3">
+  <button class="btn btn-primary" style="width: 100%" onclick="location.href='{% url 'thank_you' %}'">Proceed to the last part</button>
+</div>
+{% endblock %}

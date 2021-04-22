@@ -1,0 +1,534 @@
+{% extends "main_app/base.html" %}
+{% load static %}
+
+{% block page_title %}
+  Part 2: Session 2 of 3
+{% endblock %}
+
+{% block page_direction %}
+  <div class="row">
+    <span class="direction-text"> <b>For this part, review the displayed recipes: </b></span> <br>
+    <span class="direction-text">
+        <ul>
+          <li>Use thumbs up if you liked a recipe</li>
+          <li>Use thumbs down if you prefer not to see similar recipes</li>
+          <li>Use the radio button to explore more based on specific recipes</li>
+        </ul>
+    </span>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+<hr>
+    <!-- One element -->
+    <div class="row">
+        <!-- image -->
+        <div class="col-md-2">
+            <img class="img-header" src='{% static "images/logo.png" %}' alt="My image">
+        </div>
+        <!-- Description -->
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <b>Recipe Name:</b> Indian Chicken Foil Packs
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <b>Ingredients:</b>
+                    'red lentils', 'water', 'crushed tomatoes', 'butter', 'green onions', 'garam masala', 'salt', 'boneless skinless chicken breasts',
+                    'ground red pepper', 'yoplait', 'plain yogurt', 'cilantro leaves', 'basmati rice'
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <b>Prepration time:</b> 3 hours
+                </div>
+                <div class="col-md-6 text-right">
+                    <i class="far fa-thumbs-up fa-2x" ></i>
+                    <i class="far fa-thumbs-down fa-2x" ></i>
+                </div>
+            </div>
+        </div>
+        <!-- critique -->
+        <div class="col-md-5" style="background-color: #e3e3e3">
+            <div class="row" >
+                <b>Show similar to this but:</b>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less sour
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More protien
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More ingredients
+                      </input>
+                    </label>
+                </div>
+
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less sugar
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less fat
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More carbs
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less time
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less Protien
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More sweet
+                      </input>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- load more -->
+        <div class="col-md-1 align-middle">
+            <button class="btn btn-primary">Load more</button>
+        </div>
+    </div>
+<hr>
+    <div class="row">
+        <!-- image -->
+        <div class="col-md-2">
+            <img class="img-header" src='{% static "images/logo.png" %}' alt="My image">
+        </div>
+        <!-- Description -->
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <b>Recipe Name:</b> Indian Chicken Foil Packs
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <b>Ingredients:</b>
+                    'red lentils', 'water', 'crushed tomatoes', 'butter', 'green onions', 'garam masala', 'salt', 'boneless skinless chicken breasts',
+                    'ground red pepper', 'yoplait', 'plain yogurt', 'cilantro leaves', 'basmati rice'
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <b>Prepration time:</b> 3 hours
+                </div>
+                <div class="col-md-6 text-right">
+                    <i class="far fa-thumbs-up fa-2x" ></i>
+                    <i class="far fa-thumbs-down fa-2x" ></i>
+                </div>
+            </div>
+        </div>
+        <!-- critique -->
+        <div class="col-md-5" style="background-color: #e3e3e3">
+            <div class="row" >
+                <b>Show similar to this but:</b>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio" name="q1" value="1">
+                        More time
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less sour
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less protien
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less ingredients
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less sugar
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less fat
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More carbs
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less time
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less Protien
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More sweet
+                      </input>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- load more -->
+        <div class="col-md-1 align-middle">
+            <button class="btn btn-primary">Load more</button>
+        </div>
+    </div>
+<hr>
+    <div class="row">
+        <!-- image -->
+        <div class="col-md-2">
+            <img class="img-header" src='{% static "images/logo.png" %}' alt="My image">
+        </div>
+        <!-- Description -->
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <b>Recipe Name:</b> Indian Chicken Foil Packs
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <b>Ingredients:</b>
+                    'red lentils', 'water', 'crushed tomatoes', 'butter', 'green onions', 'garam masala', 'salt', 'boneless skinless chicken breasts',
+                    'ground red pepper', 'yoplait', 'plain yogurt', 'cilantro leaves', 'basmati rice'
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <b>Prepration time:</b> 3 hours
+                </div>
+                <div class="col-md-6 text-right">
+                    <i class="far fa-thumbs-up fa-2x" ></i>
+                    <i class="far fa-thumbs-down fa-2x" ></i>
+                </div>
+            </div>
+        </div>
+        <!-- critique -->
+        <div class="col-md-5" style="background-color: #e3e3e3">
+            <div class="row" >
+                <b>Show similar to this but:</b>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio" name="q1" value="1">
+                        Less time
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less sour
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More protien
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More ingredients
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More meaty
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less sugar
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less fat
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More carbs
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less time
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less time
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less Protien
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More sweet
+                      </input>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- load more -->
+        <div class="col-md-1 align-middle">
+            <button class="btn btn-primary" disabled>Load more</button>
+        </div>
+    </div>
+<hr>
+    <div class="row">
+        <!-- image -->
+        <div class="col-md-2">
+            <img class="img-header" src='{% static "images/logo.png" %}' alt="My image">
+        </div>
+        <!-- Description -->
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <b>Recipe Name:</b> Indian Chicken Foil Packs
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <b>Ingredients:</b>
+                    'red lentils', 'water', 'crushed tomatoes', 'butter', 'green onions', 'garam masala', 'salt', 'boneless skinless chicken breasts',
+                    'ground red pepper', 'yoplait', 'plain yogurt', 'cilantro leaves', 'basmati rice'
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <b>Prepration time:</b> 3 hours
+                </div>
+                <div class="col-md-6 text-right">
+                    <i class="far fa-thumbs-up fa-2x" ></i>
+                    <i class="far fa-thumbs-down fa-2x" ></i>
+                </div>
+            </div>
+        </div>
+        <!-- critique -->
+        <div class="col-md-5" style="background-color: #e3e3e3">
+            <div class="row" >
+                <b>Show similar to this but:</b>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio" name="q1" value="1">
+                        Less time
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less sour
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More protien
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More ingredients
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More meaty
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less sugar
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less fat
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        More carbs
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less time
+                      </input>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less time
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio"  id="q1_o1" name="q1" value="1">
+                        Less Protien
+                      </input>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                      <input type="radio" id="q1_o1" name="q1" value="1" checked>
+                        More sweet
+                      </input>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- load more -->
+        <div class="col-md-1 align-middle">
+            <button class="btn btn-primary" >Load more</button>
+        </div>
+    </div>
+<hr>
+
+<div class="row">
+    <div class="col-md-4 col-md-offset-1">
+        <button class="btn btn-primary" style="width: 100%" onclick="location.href='{% url 'session_2_reflection' %}'">Proceed, I found what I want! &#128522</button>
+    </div>
+    <div class="col-md-4 col-md-offset-1">
+        <button class="btn btn-primary" style="width: 100%" onclick="location.href='{% url 'session_2_reflection' %}'">Proceed, I did <span class="important-text"> NOT </span> find what I want! &#128531 </button>
+    </div>
+</div>
+{% endblock %}

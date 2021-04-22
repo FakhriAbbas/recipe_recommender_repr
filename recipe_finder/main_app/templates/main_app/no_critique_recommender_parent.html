@@ -1,0 +1,46 @@
+{% extends "main_app/base.html" %}
+{% load static %}
+
+{% block javascript_block %}
+  <script src="{% static 'js/critique_recommender.js' %}"></script>
+{% endblock %}
+
+{% block page_title %}
+  Part 2: Session {{session_number}} of 3
+{% endblock %}
+
+{% block page_direction %}
+  <div id="direction_section">
+      {% include 'main_app/includes/no_critique_header.html' %}
+  </div>
+{% endblock %}
+
+{% block breadcrumbs %}
+    <hr>
+    <div id="search_history_section">
+        {% include 'main_app/includes/search_history.html' %}
+    </div>
+{% endblock %}
+
+{% block content %}
+<hr>
+    <div id="recipe_list">
+        {% include 'main_app/includes/recipe_list_no_critique.html' %}
+    </div>
+{% endblock %}
+
+{% block button_block %}
+    <div id="button_section">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <button id='load_more_recipe_btn' class="btn btn-primary" style="width: 100%">Load More Recipes &#9193</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <div class="row top-buffer">
+    </div>
+{% endblock %}
+

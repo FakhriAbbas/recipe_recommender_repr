@@ -1,0 +1,40 @@
+{% extends "main_app/base.html" %}
+{% load static %}
+
+{% block page_title %}
+  Part 2: Instructions
+{% endblock %}
+
+{% block page_direction %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+        <div class="col-md-5 offset-md-3">
+          <img class='img-responsive' src='{% static "images/logo.png" %}' alt="My image">
+        </div>
+        <div class="col-md-4">
+          <div class="row">
+          <span>
+            <h3>This part consists of three sessions</h3>
+            <br>
+            <br>
+            <p class="text-justify intro-text">
+              For each session the system displays a list of recipes.
+              You are asked to prepare a meal plan for a week. You can add recipes to your meal plan and you can select to see more recipes.
+              </br>
+              </br>
+              Please note that the system can provide better help the more you explore.
+            </p>
+          </span>
+          </div>
+          <div class="row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <button class="btn btn-primary" style="width: 100%" onclick="location.href='{% url 'preference' %}'">Click here to Proceed</button>
+          </div>
+        </div>
+      </div>
+{% endblock %}

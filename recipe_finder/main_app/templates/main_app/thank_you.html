@@ -1,0 +1,33 @@
+{% extends "main_app/base.html" %}
+{% load static %}
+
+{% block page_title %}
+  Thank You!
+{% endblock %}
+
+{% block page_direction %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+        <div class="col-md-5 offset-md-3">
+          <img class='img-responsive' src='{% static "images/logo.png" %}' alt="My image">
+        </div>
+        <div class="col-md-4">
+          <div class="row">
+          <span>
+            <h3>Thank You!</h3>
+            <br>
+            <br>
+            <p class="text-justify intro-text">
+              Thanks for taking time and participate in the study. Please let the researcher know that you are done.
+              </br>
+              </br>
+              For the last part, you will have a <span class="important-text">10 minutes </span> follow-up interview.
+            </p>
+          </span>
+          </div>
+
+        </div>
+      </div>
+{% endblock %}

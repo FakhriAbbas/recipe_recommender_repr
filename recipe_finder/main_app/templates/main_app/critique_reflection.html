@@ -1,0 +1,174 @@
+{% extends "main_app/base.html" %}
+{% load static %}
+
+{%block javascript_block%}
+  <script src="{% static 'js/reflection.js' %}"></script>
+{%endblock%}
+
+{% block page_title %}
+  Part 2: Reflection on Session {{session_number}} of 3
+{% endblock %}
+
+{% block page_direction %}
+  <div class="row">
+    <span class="direction-text"><b>We would like to hear your feedback based on the recommended recipes:</b></span> <br>
+    <span class="direction-text">Please answer the following questions below. </span>
+  </div>
+{% endblock %}
+
+{% block content %}
+<hr>
+
+  <div class="row">
+    <ol>
+    <div class="col-md-12">
+    <!-- First question -->
+      <div class="row">
+        <li>
+        <span>Did you find the recipe you were looking for? </span>
+        </li>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q1_o1" name="q1" value="Yes">
+            Yes
+          </input>
+        </label>
+        </div>
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q1_o2" name="q1" value="No">
+            No
+          </input>
+        </label>
+        </div>
+
+      </div>
+    <!-- Second question -->
+    <div>
+      <div class="row top-buffer">
+        <li>
+          <span class="normal-text">Did you find new recipes ?</span>
+        </li>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q2_o1" name="q2" value="Yes">
+            Yes
+          </input>
+        </label>
+        </div>
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q2_o2" name="q2" value="No">
+            No
+          </input>
+        </label>
+        </div>
+      </div>
+    </div>
+    <!-- Third question -->
+    <div>
+      <div class="row top-buffer">
+        <li>
+          <span class="normal-text"> Among the recipes you liked, are you willing to try one of them? </span>
+        </li>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q3_o1" name="q3" value="Yes">
+            Yes, All of them
+          </input>
+        </label>
+        </div>
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q3_o2" name="q3" value="Some_of_them">
+            Some of them
+          </input>
+        </label>
+        </div>
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q3_o3" name="q3" value="No">
+            No
+          </input>
+        </label>
+        </div>
+      </div>
+    </div>
+    <!-- Fourth question -->
+    <div>
+      <div class="row top-buffer">
+        <li>
+          <span class="normal-text"> Do you think recipes were similar to each other in each displayed list? </span>
+        </li>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+        <label>
+          <input type="radio"  id="q4_o1" name="q4" value="Yes">
+            Yes, recipes were similar with small variations in ingredients
+          </input>
+        </label>
+        </div>
+        <div class="col-md-12">
+        <label>
+          <input type="radio"  id="q4_o2" name="q4" value="No">
+            No, recipes were different from each other
+          </input>
+        </label>
+        </div>
+      </div>
+    </div>
+    <!-- First question -->
+    <div>
+      <div class="row top-buffer">
+        <li>
+          <span class="normal-text"> What was your main decision when you selected to see similar recipes? </span>
+        </li>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q1_o1" name="q5" value="Flavor">
+            Flavor
+          </input>
+        </label>
+        </div>
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q1_o2" name="q5" value="Nutrition">
+            Nutritional facts
+          </input>
+        </label>
+        </div>
+        <div class="col-md-3">
+        <label>
+          <input type="radio"  id="q1_o3" name="q5" value="time_ingr">
+            Preparation time & number of ingredients
+          </input>
+        </label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+    </ol>
+  </div>
+<hr>
+
+<div class="col-md-6 col-md-offset-3">
+  {% if session_number == 3 %}
+    <button id='reflection-btn' class="btn btn-primary" style="width: 100%">End Study</button>
+  {% else %}
+    <button id='reflection-btn' class="btn btn-primary" style="width: 100%">Proceed to next session</button>
+  {% endif %}
+
+<!--  onclick="location.href='{% url 'session_2' %}'"-->
+</div>
+{% endblock %}
