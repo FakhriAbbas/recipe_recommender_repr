@@ -4,6 +4,7 @@ from django.core.files.base import ContentFile
 from ..data import *
 import pandas as pd
 import datetime
+from ..constants import *
 
 def get_random_string(length):
     letters = string.ascii_lowercase
@@ -85,6 +86,9 @@ def load_cuisine_df(cuisine_list, user_id):
 
 def load_ingr_mlb():
     return ingr_mlb
+
+def load_nutrition_mlb():
+    return nutrition_mlb
 
 def save_search_space(user_id, search_space_df):
     if check_if_file_exists(user_id, 'search_space.pkl'):
@@ -257,3 +261,21 @@ def log_session_end_service(user_id, session_name):
     tmp.append(list_)
     save_data_to_storage(user_id,name,tmp)
 
+def get_nutrition_col():
+    return [ 'fatContent_n', 'carbohydrateContent_n', 'sugarContent_n', 'calories_n', 'fiberContent_n', 'cholesterolContent_n', 'sodiumContent_n', 'proteinContent_n']
+
+def get_flavour_col():
+    return ['piquant_n', 'sour_n', 'salty_n', 'sweet_n', 'bitter_n', 'meaty_n']
+
+def get_current_type_columns(current_type):
+    if current_type == NUT_CRI:
+        return get_nutrition_col()
+    if current_type == FLA_CRI:
+        return get_flavour_col()
+    if current_type == NUT_FLA_CRI:
+        return get_nutrition_col() + get_flavour_col()
+    if current_type == ING_CRI:
+        return load_ingr_mlb().classes_
+
+def load_cuisine_object():
+    return load_cuisine_object_data()

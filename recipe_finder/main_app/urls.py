@@ -10,6 +10,7 @@ urlpatterns = [
     path('session_1', views.session_1, name='session_1'),
     path('session_2', views.session_2, name='session_2'),
     path('session_3', views.session_3, name='session_3'),
+    path('session_4', views.session_4, name='session_4'),
     path('thank_you', views.thank_you, name='thank_you'),
     path('load_critique', views.load_critique, name='load_critique'),
     path('submit_load_more', views.submit_load_more, name='submit_load_more'),
@@ -19,7 +20,6 @@ urlpatterns = [
     path('load_search_result', views.load_search_result, name='load_search_result'),
     path('end_session', views.end_session, name='end_session'),
     path('session_reflection', views.session_reflection, name='session_reflection'),
-    path('submit_load_more_no_critique', views.submit_load_more_no_critique, name='submit_load_more_no_critique'),\
-    path('load_ingredients', views.load_ingredients, name='load_ingredients'),
     path('log_recipe_flavour_nutrition', views.log_recipe_flavour_nutrition, name='log_recipe_flavour_nutrition'),
+    path('load_cuisine', views.load_cuisine, name='load_cuisine'),
 ]

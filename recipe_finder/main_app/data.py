@@ -18,6 +18,9 @@ def get_cuisine_df(cuisine):
 def get_search_space():
     return search_space
 
+def load_cuisine_object_data():
+    return pickle.load(default_storage.open('./data/pickles/cuisine_list.pkl', mode='rb'))
+
 display_name_dict ={
     'piquant_n' : 'Spicy',
     'sour_n' : 'Sour',

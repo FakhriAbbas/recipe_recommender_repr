@@ -105,6 +105,8 @@ def save_reflection_process(request):
             response['redirect-url'] = reverse('session_2')
         elif current_session == 'session_2':
             response['redirect-url'] = reverse('session_3')
+        elif current_session == 'session_3':
+            response['redirect-url'] = reverse('session_4')
         else:
             response['redirect-url'] = reverse('thank_you')
         return response
@@ -120,13 +122,8 @@ def init_recommendation(request, current_session, current_type):
     if request.is_ajax():
         pass
     else:
-        result_json, result_df, search_space_df = init_critique_recommender(request)
-        if current_type == STATIC_CRI:
-            result_json = generate_critique_static(result_df, search_space_df)
-        elif current_type == DIV_CRI:
-            result_json = generate_critique_diverstiy(result_df, search_space_df)
-        else:
-            pass
+        result_json, result_df, search_space_df = init_critique_recommender(request,current_type)
+        result_json = generate_critique_diverstiy(result_df, search_space_df, current_type)
 
         session_counter = get_study_settings_value(get_user_id(request), 'session_counter')
         current_session = get_study_settings_value(get_user_id(request), 'current_session')
@@ -142,26 +139,23 @@ def init_recommendation(request, current_session, current_type):
         context['is_end_session'] = is_end_session_condition_has_met(request)
         context['session_number'] = current_session[-1]
 
-        if current_type == NO_CRI:
-            return render(request, 'main_app/no_critique_recommender_parent.html', context=context)
-        else:
-            return render(request, 'main_app/critique_recommender_parent.html', context = context)
+        return render(request, 'main_app/critique_recommender_parent.html', context = context)
 
-def init_critique_recommender(request):
+def init_critique_recommender(request,current_type):
     user_id = request.session.get('USER_ID')
     # load preference
     cuisine_list , course_list , _ = get_preference(request.session.get('USER_ID'))
     # generate recommendation
-    recommended_recipes, search_space_df = generate_recommendation(cuisine_list, course_list, user_id, N = 10)
+    recommended_recipes, search_space_df = generate_recommendation(cuisine_list, course_list, user_id, current_type, N = 10)
     save_search_space(user_id, search_space_df)
     json_result = json.loads(recommended_recipes.to_json(orient='records'))
     return json_result, recommended_recipes, search_space_df
 
-def generate_recommendation(cuisine_list, course_list, user_id, N = 10):
+def generate_recommendation(cuisine_list, course_list, user_id, current_type, N = 10):
     subset_df = load_cuisine_df(cuisine_list,user_id)
-    ingr_mlb = load_ingr_mlb()
-    centroid = subset_df[ingr_mlb.classes_].mean()
-    distance_ = cdist([centroid], subset_df[ingr_mlb.classes_], metric='euclidean')[0]
+    repr_col = get_current_type_columns(current_type)
+    centroid = subset_df[repr_col].mean()
+    distance_ = cdist([centroid], subset_df[repr_col], metric='euclidean')[0]
     distance_ = (distance_ - min(distance_)) / (max(distance_) - min(distance_))
     subset_df['dist_'] = distance_ / 2
     if len(course_list) != 0:
@@ -177,43 +171,6 @@ def generate_recommendation(cuisine_list, course_list, user_id, N = 10):
     top_n_recipe['dislike'] = [1 if v in load_dislike_recipe_list(user_id) else 0 for v in top_n_recipe.id.values]
     top_n_recipe['meal_plan'] = [1 if v in load_meal_plan_recipe_list(user_id) else 0 for v in top_n_recipe.id.values]
     return top_n_recipe, subset_df
-
-def generate_critique_static(result_df, search_space_df):
-    flavor_col =  ['piquant_n', 'sour_n', 'salty_n', 'sweet_n', 'bitter_n', 'meaty_n']
-    nutrition_col = [ 'saturatedFatContent_n', 'fatContent_n', 'carbohydrateContent_n',
-                    'sugarContent_n', 'calories_n', 'fiberContent_n', 'cholesterolContent_n',
-                    'transFatContent_n', 'sodiumContent_n', 'proteinContent_n']
-    result_df['critique'] = None
-    result_df['critique'].astype('object')
-
-    for index, row in result_df.iterrows():
-        df_critique = pd.DataFrame(columns=['column_name', 'display_name', 'direction'])
-
-        for col in flavor_col:
-            if not math.isnan(row[col]):
-                has_more = (search_space_df[col].values > row[col]).any()
-                has_less = (search_space_df[col].values < row[col]).any()
-                if (has_less == 0) and (has_more == 0):
-                    continue
-
-                new_row = {'column_name': col, 'display_name': get_display_name(col), 'More' : has_more , 'Less' : has_less }
-                df_critique = df_critique.append(new_row, ignore_index=True)
-
-        for col in nutrition_col:
-            s = search_space_df[col].values
-            if row[col]:
-                has_more = ( s > row[col] ).any()
-                has_less = ( s < row[col] ).any()
-                if (has_less == 0) and (has_more == 0):
-                    continue
-
-                new_row = {'column_name': col, 'display_name': get_display_name(col), 'More' : has_more , 'Less' : has_less }
-                df_critique = df_critique.append(new_row, ignore_index=True)
-
-        result_df.at[index,'critique'] = json.loads( df_critique.to_json(orient='records') )
-
-    json_result = json.loads(result_df.to_json(orient='records'))
-    return json_result
 
 def get_cat(cal, average):
     if cal is None:
@@ -242,11 +199,11 @@ def intra_list_similarity(ids , metric_, matrix_, opposite = False):
     factor = length*(length - 1)/2
     return dist_sum/i
 
-def generate_critique_diverstiy(result_df, search_space_df):
-    flavor_col =  ['piquant_n', 'sour_n', 'salty_n', 'sweet_n', 'bitter_n', 'meaty_n']
-    nutrition_col = [ 'saturatedFatContent_n', 'fatContent_n', 'carbohydrateContent_n',
-                    'sugarContent_n', 'calories_n', 'fiberContent_n', 'cholesterolContent_n',
-                    'transFatContent_n', 'sodiumContent_n', 'proteinContent_n']
+def generate_critique_diverstiy(result_df, search_space_df, current_type):
+
+    flavor_col =  get_flavour_col()
+    nutrition_col = get_nutrition_col()
+
     columns = flavor_col + nutrition_col
     result_df['critique'] = None
     result_df['critique'].astype('object')
@@ -254,16 +211,14 @@ def generate_critique_diverstiy(result_df, search_space_df):
     result = {}
     subset_size = search_space_df.shape[0]
     data = search_space_df[columns]
-
     # convert data to 0/1 based on average
     for col in columns:
         average = data[col].mean()
-        print(col, average)
-        # data[col] = (data[col] > average).astype(int)
         values = data[col].values
         data.loc[ values > average , col ] = 1
         data.loc[ values <= average, col] = 0
-        # data[col] = data.apply( lambda row: get_cat(row[col],average) , axis = 1 )
+
+    div_data = search_space_df[ get_current_type_columns(current_type) ]
 
     for t in range(0,10):
         # create the random list
@@ -271,8 +226,7 @@ def generate_critique_diverstiy(result_df, search_space_df):
         for i in range(0, int(10) ):
             n = random.randint(0,subset_size - 1)
             randomlist.append( n )
-        ils = intra_list_similarity( randomlist, 'jaccard' , csr_matrix(data) , opposite=False)
-        # print(t,ils,randomlist)
+        ils = intra_list_similarity( randomlist, 'jaccard' , csr_matrix(div_data) , opposite=False)
         result[t] = (ils, randomlist)
     col_counter = [0] * len(columns)
 
@@ -347,37 +301,16 @@ def load_current_results(request):
 
 def load_more_critique_recommender(request):
     direction, column_name, recipe_name, recipe_id = extract_critique_data(request)
+    current_type = get_study_settings_value(get_user_id(request), 'current_type')
     user_id = request.session.get('USER_ID')
     # load preference
     cuisine_list , course_list , _ = get_preference(request.session.get('USER_ID'))
     # generate recommendation
-    recommended_recipes = load_more_recipes(cuisine_list, course_list, direction, column_name, recipe_name, recipe_id, user_id, N = 10)
+    recommended_recipes = load_more_recipes(cuisine_list, course_list, direction, column_name, recipe_name, recipe_id, current_type, user_id, N = 10)
     json_result = json.loads(recommended_recipes.to_json(orient='records'))
     return json_result, recommended_recipes
 
-def load_more_no_critique_recommender(request):
-    user_id = get_user_id(request)
-    # load preference
-    cuisine_list , course_list , _ = get_preference(request.session.get('USER_ID'))
-    # load search space
-    search_space_df = load_search_space(user_id)
-    recommended_recipes = load_more_recipes_no_critique(search_space_df, user_id)
-    # generate recommendation
-    json_result = json.loads(recommended_recipes.to_json(orient='records'))
-    return json_result, recommended_recipes
-
-def load_more_recipes_no_critique(search_space_df, user_id, N = 10):
-    current_counter = get_study_settings_value(user_id, 'session_counter')
-    top_n_recipe = search_space_df.sort_values(by='score', ascending=False)[current_counter*N:current_counter*N+N][get_relevant_columns()]
-    top_n_recipe.drop_duplicates(subset=['id'], inplace=True)
-
-    # add dislike and meal values
-    top_n_recipe['dislike'] = [1 if v in load_dislike_recipe_list(user_id) else 0 for v in top_n_recipe.id.values]
-    top_n_recipe['meal_plan'] = [1 if v in load_meal_plan_recipe_list(user_id) else 0 for v in top_n_recipe.id.values]
-
-    return top_n_recipe
-
-def load_more_recipes(cuisine_list, course_list, direction, column_name, recipe_name, recipe_id, user_id, N = 10):
+def load_more_recipes(cuisine_list, course_list, direction, column_name, recipe_name, recipe_id, current_type, user_id, N = 10):
     search_space_df = load_search_space(user_id)
     dis_like_list = load_dislike_recipe_list(user_id)
     threshold = search_space_df[search_space_df['id'] == recipe_id][column_name].values[0]
@@ -386,8 +319,9 @@ def load_more_recipes(cuisine_list, course_list, direction, column_name, recipe_
         tmp_df = search_space_df[ search_space_df[column_name] > threshold ]
     elif direction == 'Less':
         tmp_df = search_space_df[search_space_df[column_name] < threshold]
-    centroid = tmp_df[ tmp_df['id'] == recipe_id ][ingr_mlb.classes_].mean()
-    distance_ = cdist([centroid], tmp_df[ingr_mlb.classes_], metric='euclidean')[0] # takes time
+    current_type_col = get_current_type_columns(current_type)
+    centroid = tmp_df[ tmp_df['id'] == recipe_id ][current_type_col].mean()
+    distance_ = cdist([centroid], tmp_df[current_type_col], metric='euclidean')[0] # takes time
     distance_ = (distance_ - min(distance_)) / (max(distance_) - min(distance_))
     tmp_df.loc[:, 'dist_'] = distance_ / 2
     if len(course_list) != 0:
