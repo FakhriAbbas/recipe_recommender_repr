@@ -55,7 +55,7 @@ def preference(request):
         return HttpResponse(json.dumps(response), content_type="application/json")
     else:
         context = {
-            'cuisine_list' : get_cuisine_list(),
+            'cuisine_list' : load_cuisine_object(),
             'course_list' : get_course_list()
         }
         return render(request, 'main_app/preference.html', context = context)
@@ -208,7 +208,9 @@ def session_reflection(request):
         return HttpResponse(json.dumps(response), content_type="application/json")
 
 def thank_you(request):
-    return render(request, 'main_app/thank_you.html')
+    context = {}
+    context['code'] = get_user_id(request)
+    return render(request, 'main_app/thank_you.html', context = context)
 
 def log_recipe_flavour_nutrition(request):
     log_recipe_flavour_nutrition_logic(request)
@@ -222,3 +224,6 @@ def load_cuisine(request):
         response['status'] = 1
         response['data'] = load_cuisine_object()
         return HttpResponse(json.dumps(response), content_type="application/json")
+
+def consent_form(request):
+    return render(request, 'main_app/consent_form.html')

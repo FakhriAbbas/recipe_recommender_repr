@@ -18,6 +18,7 @@ $( document ).ready(function() {
 
     }
 
+    country_list = [];
     function populate_autocomplete(data){
         $( "#autocomplete" ).autocomplete({
             source: data,
@@ -27,6 +28,12 @@ $( document ).ready(function() {
                    },
             select: function (event, ui){
                 $( "#autocomplete" ).val('');
+                var value = ui.item.value;
+                // check if country already exist
+                if( country_list.find( element => element == value ) )
+                    return;
+                country_list.push(ui.item.value)
+
                 $('#countries-holder').after(
                     '    <span id="country-span-'+ ui.item.value +'" class="tag label label-primary">' +
                     '    <span>' + ui.item.label + '</span>' +
@@ -46,9 +53,8 @@ $( document ).ready(function() {
         });
     }
 
-
-
-
+    $('#modal-button-id').click(function (event) {
+    });
 
     $('#preference-btn').click(function (event) {
         var q3_values = read_checkbox_values('q3');
@@ -59,7 +65,7 @@ $( document ).ready(function() {
         });
 
         if(VALIDATION){
-            if( cuisine_list.length == 0 )
+            if( cuisine_list.length == 0 ){
                 $( "#autocomplete" ).notify("Select at least one cuisine to proceed", "error",
                                             {
                                                 autoHide: true,
@@ -67,6 +73,8 @@ $( document ).ready(function() {
                                                 hideDuration: 100,
                                             }
                 );
+                return
+            }
         }
 
         // Show full page LoadingOverlay

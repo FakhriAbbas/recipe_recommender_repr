@@ -1,5 +1,9 @@
 $( document ).ready(function() {
 
+    function show_notify_message(){
+        $.notify("Before you proceed, make sure to answer all questions", "error");
+    }
+
     $('#q2_o3').change(function (event) {
         var value = !$('#q2_o3').is(":checked")
         $("#q2-text").prop('disabled', value);
@@ -11,13 +15,22 @@ $( document ).ready(function() {
     });
 
     $('#q2_o1').change(function (event) {
-        var value = !$('#q2_o1').is(":checked")
-        $("#q5-text").prop('disabled', value);
+        var value_q2 = $('#q2_o1').is(":checked")
+        var value_q4 = $('#q4_o1').is(":checked")
+        var value = false;
+        if( value_q2 == true || value_q4 == true )
+            value = true;
+        $("#q5-text").prop('disabled', !value);
     });
 
     $('#q4_o1').change(function (event) {
-        var value = !$('#q4_o1').is(":checked")
-        $("#q6-text").prop('disabled', value);
+        var value_q2 = $('#q2_o1').is(":checked")
+        var value_q4 = $('#q4_o1').is(":checked")
+        var value = false;
+        if( value_q2 == true || value_q4 == true )
+            value = true;
+        $("#q5-text").prop('disabled', !value);
+
     });
 
     $('#pre-survey-btn').click(function (event) {
@@ -33,9 +46,19 @@ $( document ).ready(function() {
         var q8 = $("input:radio[name ='q8']:checked").val();
         var q9 = $("input:radio[name ='q9']:checked").val();
 
-        console.log(q2_values);
+        console.log(q5)
+
         if(VALIDATION){
-            // TODO
+            var correct = true;
+            if(!q1 | !q3 | !q7 | !q6 | !q8 | !q9 |
+                q2_values.length == 0 | q4_values.length == 0 |
+                ( !$('#q5-text').prop('disabled') & !q5)
+            )
+                correct = false;
+            if(correct == false){
+                show_notify_message();
+                return;
+            }
         }
         $.ajax({
          type: 'POST',

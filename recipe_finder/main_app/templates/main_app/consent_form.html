@@ -1,0 +1,44 @@
+{% extends "main_app/base.html" %}
+{% load static %}
+
+{% block page_title %}
+  Consent Form
+{% endblock %}
+
+{% block javascript_block %}
+  <script src="{% static 'js/consent-form.js' %}"></script>
+{% endblock %}
+
+
+{% block page_direction %}
+{% endblock %}
+
+{% block content %}
+<div class="row ustify-content-center">
+    <div class="col-md-7">
+        <iframe src="https://drive.google.com/file/d/1g7PuJouaO8q1SVcD0-4nN8fACC60HmiR/preview" width="640" height="480"></iframe>
+    </div>
+    <div class="col-md-5">
+        Please, read the consent form then indicate if you wish to continue.
+        <div class="row">
+            <div class="col-md-12">
+            <label>
+              <input type="radio" id="q_o1" name="q" value="agree">
+                I agree to continue.
+              </input>
+            </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+            <label>
+              <input type="radio" id="q_o2" name="q" value="dont_agree">
+                Thank You, I do NOT agree to continue.
+              </input>
+            </label>
+            </div>
+        </div>
+        <button id='proceed-btn' disabled class="btn btn-primary" style="width: 100%" onclick="location.href='{% url 'pre_survey' %}'">Click here to Proceed</button>
+    </div>
+</div>
+{% endblock %}

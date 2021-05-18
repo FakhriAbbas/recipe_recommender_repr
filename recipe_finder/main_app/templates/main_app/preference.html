@@ -28,7 +28,7 @@
       </div>
       <div id='q1' class="row">
         <input id="autocomplete" name="cusisine" type="text" class="form-control" placeholder="Type here the country name" aria-label="Other" aria-describedby="btnGroupAddon2">
-        <span class="normal-text"> Check the full list of availabe cuisines <a class="pointer_cursor">here</a> </span>
+        <span class="normal-text"> Check the full list of available cuisines <a id='modal-button-id' class="pointer_cursor" data-toggle="modal" data-target="#cuisine_list_modal">here</a> </span>
         <div id="countries-holder" class="small-top-buffer">
         </div>
 
@@ -71,5 +71,37 @@
 <div class="col-md-6 col-md-offset-3">
   <button id="preference-btn" class="btn btn-primary" style="width: 100%" >Start Session 1 of 4</button>
 </div>
+
+
+<div id="modal_wrapper">
+        <!-- The modal -->
+        <div class="modal fade" id="cuisine_list_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="modalLabel">
+                            <b><img src="{% static 'images/world-map-logo.png'%}" style="width: 45px">List of Cuisines</b>
+                        </h4>
+                    </div>
+                    <div class="modal-body" style="overflow:auto;">
+                            {% for c in cuisine_list %}
+                                <div class="col-md-3">
+                                    <li>{{ c.label }}</li>
+                                </div>
+                            {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+
 
 {% endblock %}

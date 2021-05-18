@@ -8,7 +8,7 @@ search_space = None
 
 def load_cuisine_data_to_dict(cuisine):
     if cuisine not in cuisine_dict:
-        tmp_df = pickle.load(default_storage.open('./data/pickles/recommender_df_' + str(cuisine) + '.pkl' , mode='rb'))
+        tmp_df = pickle.load(default_storage.open('./data/pickles/cuisine_country_df/recommender_df_' + str(cuisine) + '.pkl' , mode='rb'))
         cuisine_dict[cuisine] = tmp_df
 
 def get_cuisine_df(cuisine):
@@ -19,7 +19,10 @@ def get_search_space():
     return search_space
 
 def load_cuisine_object_data():
-    return pickle.load(default_storage.open('./data/pickles/cuisine_list.pkl', mode='rb'))
+    list = pickle.load(default_storage.open('./data/pickles/cuisine_list.pkl', mode='rb'))
+    newlist = sorted(list, key=lambda k: k['label'])
+    print(newlist)
+    return newlist
 
 display_name_dict ={
     'piquant_n' : 'Spicy',

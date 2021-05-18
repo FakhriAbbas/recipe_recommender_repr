@@ -22,4 +22,5 @@ urlpatterns = [
     path('session_reflection', views.session_reflection, name='session_reflection'),
     path('log_recipe_flavour_nutrition', views.log_recipe_flavour_nutrition, name='log_recipe_flavour_nutrition'),
     path('load_cuisine', views.load_cuisine, name='load_cuisine'),
+    path('consent_form', views.consent_form, name='consent_form'),
 ]
