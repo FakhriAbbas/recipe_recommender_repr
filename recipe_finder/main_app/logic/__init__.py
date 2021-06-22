@@ -86,6 +86,8 @@ def save_reflection_process(request):
         q3 = request.POST.get("q3", "")
         q4 = request.POST.get("q4", "")
         q5 = request.POST.get("q5", "")
+        q6 = request.POST.get("q6", "")
+        q7 = request.POST.get("q7", "")
 
         # prepare data
         data = {}
@@ -94,6 +96,8 @@ def save_reflection_process(request):
         data['q3'] = q3
         data['q4'] = q4
         data['q5'] = q5
+        data['q6'] = q6
+        data['q7'] = q7
         current_session = get_study_settings_value(get_user_id(request),'current_session')
 
         # save data

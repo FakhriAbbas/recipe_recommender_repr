@@ -23,34 +23,61 @@ $( document ).ready(function() {
         $( "#autocomplete" ).autocomplete({
             source: data,
             focus: function( event, ui ) {
-                      $( "#autocomplete" ).val( ui.item.label );
+                      $( "#autocomplete" ).val( ui.item.label + ' (' + ui.item.count +')' );
                          return false;
                    },
             select: function (event, ui){
                 $( "#autocomplete" ).val('');
                 var value = ui.item.value;
                 // check if country already exist
-                if( country_list.find( element => element == value ) )
+                if( country_list.find( element => element[0] == value ) )
                     return;
-                country_list.push(ui.item.value)
+                country_list.push( [ui.item.value , ui.item.count] )
 
                 $('#countries-holder').after(
                     '    <span id="country-span-'+ ui.item.value +'" class="tag label label-primary">' +
-                    '    <span>' + ui.item.label + '</span>' +
+                    '    <span>' + ui.item.label + ' (' + ui.item.count + ')' + '</span>' +
                     '    <a><i id="country-' + ui.item.value + '"' +
                     '          data="' + ui.item.value + '"' +
                     'class="remove glyphicon glyphicon-remove-sign glyphicon-white"></i></a>' +
                     '    </span>'
                 )
 
-                $('i[id^="country-"]').on('click', function () {
+
+
+                $('i[id^="country-' + ui.item.value + '"]').on('click', function () {
                     country_value =  $(this).attr('data')
+                    ele = country_list.find( element => element[0] == country_value )
+                    console.log(ele)
+
+                    var index = country_list.indexOf(ele);
+                    console.log('before ' + country_list)
+                    country_list.splice(index, 1);
+                    console.log('after ' + country_list)
+
                     $('#country-span-' + country_value).remove()
+                    update_counter();
                 });
+
+                update_counter();
 
                 return false;
             }
         });
+    }
+
+    function update_counter(){
+        var counter = 0;
+        for (const value of country_list) {
+            counter = counter + value[1];
+        }
+        $('#counter_span').html(counter);
+
+        if (counter < 5000)
+            $("#preference-btn").prop('disabled', true);
+        else
+            $("#preference-btn").prop('disabled', false);
+
     }
 
     $('#modal-button-id').click(function (event) {

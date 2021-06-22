@@ -98,3 +98,11 @@ hr{
   color: #fff;
   margin-bottom: 2px;
 }
+
+
+.likert li {
+  display:inline-block;
+  width:19%;
+  text-align:center;
+  vertical-align: top;
+}

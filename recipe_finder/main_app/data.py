@@ -21,7 +21,7 @@ def get_search_space():
 def load_cuisine_object_data():
     list = pickle.load(default_storage.open('./data/pickles/cuisine_list.pkl', mode='rb'))
     newlist = sorted(list, key=lambda k: k['label'])
-    print(newlist)
+    print(list)
     return newlist
 
 display_name_dict ={
