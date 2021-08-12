@@ -37,7 +37,7 @@ def index(request,variation):
     ]
 
     save_study_variables(get_user_id(request))
-    add_to_study_settings( get_user_id(request), 'seq', variations[15])
+    add_to_study_settings( get_user_id(request), 'seq', variations[variation])
     return render(request, 'main_app/index.html')
 
 def pre_survey(request):
@@ -97,37 +97,40 @@ def load_critique(request):
 def submit_load_more(request):
     if request.is_ajax():
         response = {}
+        user_id = get_user_id(request)
         json_result, result_df  = load_more_critique_recommender(request)
-        search_space = load_search_space(get_user_id(request))
-        current_type = get_study_settings_value(get_user_id(request),'current_type')
-        result_json = generate_critique_diverstiy(result_df, search_space,current_type)
+        search_space = load_search_space(user_id)
+        current_type = get_study_settings_value(user_id,'current_type')
+        current_session = get_study_settings_value(user_id, 'current_session')
+        distance_tree = get_distance_tree(request=request,current_type=current_type, current_session=current_session)
+        result_json = generate_critique_diverstiy(result_df, search_space, current_type, distance_tree)
         template = get_template("main_app/includes/recipe_list_critique.html")
         response['list-content'] = template.render({'items': result_json }, request)
         template = get_template("main_app/includes/critique_header.html")
         context = {}
-        session_counter = get_study_settings_value(get_user_id(request), 'session_counter')
+        session_counter = get_study_settings_value(user_id, 'session_counter')
         context['session_progress'] = get_exploration_progress_service(session_counter)
-        context['meal_plan_progress'] = get_meal_plan_progress(get_user_id(request))
+        context['meal_plan_progress'] = get_meal_plan_progress(user_id)
         context['is_end_session'] = is_end_session_condition_has_met(request)
         response['direction-content'] = template.render(context,request)
         template = get_template("main_app/includes/empty.html") # TODO based on progress
         response['button-content'] = template.render({},request)
 
-        current_session = get_study_settings_value(get_user_id(request), 'current_session')
+        current_session = get_study_settings_value(user_id, 'current_session')
 
-        session_counter = get_study_settings_value(get_user_id(request), 'session_counter')
-        add_to_study_settings(get_user_id(request), 'session_counter' , session_counter + 1)
-        add_to_study_settings(get_user_id(request), 'current_counter', session_counter + 1)
-        session_counter = get_study_settings_value(get_user_id(request), 'session_counter')
+        session_counter = get_study_settings_value(user_id, 'session_counter')
+        add_to_study_settings(user_id, 'session_counter' , session_counter + 1)
+        add_to_study_settings(user_id, 'current_counter', session_counter + 1)
+        session_counter = get_study_settings_value(user_id, 'session_counter')
 
         direction, column_name, recipe_name, recipe_id = extract_critique_data(request)
-        save_user_exploration_history(get_user_id(request),recipe_name,column_name,direction)
-        save_data_to_storage(get_user_id(request),
+        save_user_exploration_history(user_id,recipe_name,column_name,direction)
+        save_data_to_storage(user_id,
                          current_session  + '/' + str(session_counter),
                          result_json )
 
         template = get_template("main_app/includes/search_history.html")
-        search_items = load_search_history_summary(get_user_id(request))
+        search_items = load_search_history_summary(user_id)
         response['search-history-content'] = template.render({'search_items' : search_items},request)
         response['is_end_session'] = is_end_session_condition_has_met(request)
         response['status'] = 1
@@ -139,7 +142,6 @@ def submit_dislike(request):
     recipe_name = request.POST.get("recipe_name", "")
     user_id = get_user_id(request)
     if request.POST.get("value", "") == '0':
-        print('maybe')
         remove_dislike_recipe(recipe_name,user_id)
     elif request.POST.get("value", "") == '1':
         add_dislike_recipe(recipe_name,user_id)

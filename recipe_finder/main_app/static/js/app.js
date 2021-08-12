@@ -22,5 +22,6 @@ function read_checkbox_values(element_id){
         values.push($(this).val());
     });
     return values
+    
 }
 

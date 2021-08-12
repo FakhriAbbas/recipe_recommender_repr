@@ -127,7 +127,8 @@ def init_recommendation(request, current_session, current_type):
         pass
     else:
         result_json, result_df, search_space_df = init_critique_recommender(request,current_type)
-        result_json = generate_critique_diverstiy(result_df, search_space_df, current_type)
+        distance_tree = get_distance_tree(request,current_type,current_session)
+        result_json = generate_critique_diverstiy(result_df, search_space_df, current_type, distance_tree)
 
         session_counter = get_study_settings_value(get_user_id(request), 'session_counter')
         current_session = get_study_settings_value(get_user_id(request), 'current_session')
@@ -203,7 +204,95 @@ def intra_list_similarity(ids , metric_, matrix_, opposite = False):
     factor = length*(length - 1)/2
     return dist_sum/i
 
-def generate_critique_diverstiy(result_df, search_space_df, current_type):
+def transform_to_categorical(df,critique_columns):
+    for col in critique_columns:
+        values = df[col].values
+        avg = pd.Series(values).mean(skipna=True)
+        tmp_list = list()
+        for v in values:
+            tmp_list.append( get_cat(v, average=avg) )
+        df.loc[ : , 'c_' + col] = tmp_list
+    return df
+
+def get_diverse_recipes(data_df, distance_tree, s_index, repr_columns):
+    length = data_df.shape[0]
+    recipe_list = list()
+    recipe_list.append(s_index)
+    for i in range(0, 10):
+        print(data_df[data_df.index == s_index][repr_columns])
+        dist, idx = distance_tree.query(data_df[data_df.index == s_index][repr_columns],k=length)
+        ordered_list = idx[0]
+        for s_i in range(1, len(ordered_list)):
+            s_index = ordered_list[s_i * -1]
+            if s_index not in recipe_list:
+                recipe_list.append(s_index)
+                break
+    return recipe_list
+
+def transform_recipe_to_categorical(target_recipe_df, farthest_recipes_df, categorical_col):
+    for categorical in categorical_col:
+        v = farthest_recipes_df[categorical].values
+        avg = pd.Series(v).mean(skipna=True)
+        target_recipe_df[categorical] = get_cat(target_recipe_df[categorical] , avg)
+    return target_recipe_df
+
+def generate_critique_diverstiy(result_df, search_space_df, current_type, distance_tree):
+    flavor_col =  get_flavour_col()
+    nutrition_col = get_nutrition_col()
+
+    critique_columns = flavor_col + nutrition_col
+    result_df['critique'] = None
+    result_df['critique'].astype('object')
+
+    # result = {}
+    top_n_recipe = transform_to_categorical(result_df, critique_columns)
+    categorical_col = [('c_' + str(col)) for col in critique_columns]
+    representation_columns = get_current_type_columns(current_type)
+    data_df = search_space_df[representation_columns]
+    for index, row in top_n_recipe.iterrows():
+        print('index ==========>', index)
+        df_critique = pd.DataFrame(columns=['column_name', 'display_name', 'direction'])
+        farthest_recipes_idx_list = get_diverse_recipes(data_df, distance_tree, index, representation_columns)
+        diverse_df = search_space_df[search_space_df.index.isin(farthest_recipes_idx_list)]
+        diverse_df = transform_to_categorical(diverse_df, critique_columns)
+        target_recipe_df = row
+        col_counter = [0] * len(critique_columns)
+        for f_index, f_row in diverse_df.iterrows():
+            for col_idx, col in enumerate(categorical_col):
+                if f_row[col] == 1:
+                    col_counter[col_idx] = col_counter[col_idx] + 1
+        # percentage
+        col_counter_one = [ round(x/diverse_df.shape[0],2) for x in col_counter]
+        col_counter_zero = [ round(1 - x,2) for x in col_counter_one]
+        transformed_recipe = transform_recipe_to_categorical(target_recipe_df, diverse_df, categorical_col)
+        r_vector = transformed_recipe[categorical_col]
+        r_inv_vector = [ round(1 - x,2) if x is not None else None for x in r_vector]
+        top_feature_n = 5
+
+        # result[target_recipe_df['recipeName']] = {}
+        # result[target_recipe_df['recipeName']]['id'] = row['id']
+        for v_index, value in enumerate(r_inv_vector):
+            has_more = 0
+            has_less = 0
+            if value == 0:
+                if v_index in np.argsort(col_counter_zero)[0:top_feature_n]:
+                    # result[target_recipe_df['recipeName']][critique_columns[v_index]] = 'low'
+                    has_less = 1
+            elif value == 1:
+                if v_index in np.argsort(col_counter_one)[0:top_feature_n]:
+                    # result[target_recipe_df['recipeName']][critique_columns[v_index]] = 'High'
+                    has_more = 1
+            elif (has_less == 0) and (has_more == 0):
+                continue
+            new_row = {'column_name': critique_columns[v_index], 'display_name': get_display_name(critique_columns[v_index]),
+                       'More': has_more, 'Less': has_less}
+            df_critique = df_critique.append(new_row, ignore_index=True)
+
+        result_df.at[index, 'critique'] = json.loads(df_critique.to_json(orient='records'))
+    json_result = json.loads(result_df.to_json(orient='records'))
+    return json_result
+
+def generate_critique_diverstiy_random(result_df, search_space_df, current_type):
 
     flavor_col =  get_flavour_col()
     nutrition_col = get_nutrition_col()
@@ -272,7 +361,6 @@ def generate_critique_diverstiy(result_df, search_space_df, current_type):
         result_df.at[index, 'critique'] = json.loads(df_critique.to_json(orient='records'))
     json_result = json.loads(result_df.to_json(orient='records'))
     return json_result
-
 
 def get_critique_for_recipe(request):
     results_json = load_current_results(request)
@@ -350,12 +438,9 @@ def get_exploration_progress(counter):
 def is_end_session_condition_has_met(request):
     user_id = get_user_id(request)
     counter = get_study_settings_value(user_id, 'session_counter')
-    print('counter', counter)
     expl_progress = get_exploration_progress(counter)
     meal_plan_progress = get_meal_plan_progress(user_id)
 
-    print(expl_progress)
-    print(meal_plan_progress)
     if expl_progress > 99 and meal_plan_progress > 99:
         return 1
     else:

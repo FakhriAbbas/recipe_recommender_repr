@@ -5,6 +5,8 @@ from ..data import *
 import pandas as pd
 import datetime
 from ..constants import *
+from sklearn.neighbors import KDTree
+from sklearn.neighbors import DistanceMetric
 
 def get_random_string(length):
     letters = string.ascii_lowercase
@@ -76,19 +78,16 @@ def get_course_preference(user_id):
 
 def load_cuisine_df(cuisine_list, user_id):
     if check_if_file_exists(user_id,'search_space.pkl'):
-        print('loaded')
         return load_search_space(user_id)
     subset_df = pd.DataFrame()
     for c in cuisine_list:
         tmp_df = get_cuisine_df(c)
         subset_df = pd.concat([subset_df, tmp_df])
+    subset_df = subset_df.reset_index(drop=True)
     return subset_df
 
 def load_ingr_mlb():
     return ingr_mlb
-
-def load_nutrition_mlb():
-    return nutrition_mlb
 
 def save_search_space(user_id, search_space_df):
     if check_if_file_exists(user_id, 'search_space.pkl'):
@@ -203,7 +202,6 @@ def log_meal_plan_transaction(recipe_name, user_id, action, session_name):
         tmp = json.loads(load_data_from_storage(user_id,name))
         delete_file(user_id,name)
     tmp.append(list_)
-    print(tmp)
     save_data_to_storage(user_id,name,tmp)
 
 def log_dislike_transaction(recipe_name, user_id, action, session_name):
@@ -214,7 +212,6 @@ def log_dislike_transaction(recipe_name, user_id, action, session_name):
         tmp = json.loads(load_data_from_storage(user_id,name))
         delete_file(user_id,name)
     tmp.append(list_)
-    print(tmp)
     save_data_to_storage(user_id,name,tmp)
 
 def log_loading_search_result(user_id, search_number, session_name):
@@ -279,3 +276,21 @@ def get_current_type_columns(current_type):
 
 def load_cuisine_object():
     return load_cuisine_object_data()
+
+def get_distance_tree(request, current_type, current_session):
+    user_id = get_user_id(request)
+    search_space_df = load_search_space(user_id)
+    search_space_df = search_space_df[ get_current_type_columns( current_type ) ]
+    distance_tree = None
+    path = './data/results/' + str(user_id) + '/' + current_session + '/' + 'distance_tree.pkl'
+    if not check_if_file_exists(user_id, current_session + '/distance_tree.pkl' ):
+        dist = DistanceMetric.get_metric('euclidean')
+        distance_tree = KDTree(search_space_df.to_numpy(), metric=dist)
+        file = open(path,'wb')
+        pickle.dump(distance_tree, file)
+    else:
+        file = open(path , 'rb')
+        distance_tree = pickle.load(file)
+    return distance_tree
+
+
