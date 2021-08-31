@@ -1,0 +1,25 @@
+{% extends "main_app/base.html" %}
+{% load static %}
+
+{% block page_title %}
+  Video Tutorial
+{% endblock %}
+
+{% block page_direction %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+        <div class="col-md-12">
+          <div class="row">
+          <span>
+            <h4>To successfully complete the study, we ask you to watch a 4-minutes tutorial on how to use the website.</h4>
+            <br>
+            <br>
+          </span>
+          </div>
+            <iframe width="100%" height="520" src="https://www.youtube.com/embed/gEP7p_WzCkQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    <button id='proceed-btn' class="btn btn-primary" style="width: 100%" onclick="location.href='{% url 'pre_survey' %}'">Click here to Proceed</button>
+      </div>
+{% endblock %}
