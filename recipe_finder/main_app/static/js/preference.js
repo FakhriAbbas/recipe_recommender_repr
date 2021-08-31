@@ -105,7 +105,17 @@ $( document ).ready(function() {
         }
 
         // Show full page LoadingOverlay
-        $.LoadingOverlay("show");
+        // $.LoadingOverlay("show");
+        $.LoadingOverlay("show", {
+            image       : "",
+            text        : "Loading..."
+        });
+        setTimeout(function(){
+            $.LoadingOverlay("text", "Yep, still loading...");
+        }, 2500);
+        setTimeout(function(){
+            $.LoadingOverlay("text", "Preparing results...");
+        }, 5000);
 
 
         $.ajax({

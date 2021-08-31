@@ -4,6 +4,8 @@ from django.template.loader import get_template
 from .logic import *
 from .constants import *
 import json
+import csv
+
 
 def index(request,variation):
     if 'USER_ID' not in request.session:
@@ -190,18 +192,22 @@ def end_session(request):
     if current_session == 'session_1':
         context = {}
         context['session_number'] = 1
+        delete_file(get_user_id(request), 'session_1/distance_tree.pkl')
         return render(request, 'main_app/critique_reflection.html', context = context)
     if current_session == 'session_2':
         context = {}
         context['session_number'] = 2
+        delete_file(get_user_id(request), 'session_2/distance_tree.pkl')
         return render(request, 'main_app/critique_reflection.html', context = context)
     if current_session == 'session_3':
         context = {}
         context['session_number'] = 3
+        delete_file(get_user_id(request), 'session_3/distance_tree.pkl')
         return render(request, 'main_app/critique_reflection.html', context = context)
     if current_session == 'session_4':
         context = {}
         context['session_number'] = 4
+        delete_file(get_user_id(request), 'session_4/distance_tree.pkl')
         return render(request, 'main_app/critique_reflection.html', context = context)
 
 def session_reflection(request):
@@ -229,3 +235,27 @@ def load_cuisine(request):
 
 def consent_form(request):
     return render(request, 'main_app/consent_form.html')
+
+def video_tutorial(request):
+    return render(request, 'main_app/video_tutorial.html')
+
+def download_meal_plan(request):
+    log_download_meal_plan(request)
+    user_id = get_user_id(request)
+    recipe_df = get_meal_plan_dataframe_per_session(user_id, 'session_1')
+    recipe_df = recipe_df.append( get_meal_plan_dataframe_per_session(user_id, 'session_2') )
+    recipe_df = recipe_df.append( get_meal_plan_dataframe_per_session(user_id, 'session_3') )
+    recipe_df = recipe_df.append( get_meal_plan_dataframe_per_session(user_id, 'session_4') )
+
+    recipe_df = recipe_df[['recipeName' , 'url']]
+    recipe_df.drop_duplicates(inplace=True)
+
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="recipes_mealplan.csv"'
+
+    writer = csv.writer(response)
+    for index, row in recipe_df.iterrows():
+        writer.writerow([row['recipeName'], row['url']])
+    return response
+

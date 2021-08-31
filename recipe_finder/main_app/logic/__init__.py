@@ -219,7 +219,7 @@ def get_diverse_recipes(data_df, distance_tree, s_index, repr_columns):
     recipe_list = list()
     recipe_list.append(s_index)
     for i in range(0, 10):
-        print(data_df[data_df.index == s_index][repr_columns])
+        # print(data_df[data_df.index == s_index][repr_columns])
         dist, idx = distance_tree.query(data_df[data_df.index == s_index][repr_columns],k=length)
         ordered_list = idx[0]
         for s_i in range(1, len(ordered_list)):
@@ -491,6 +491,13 @@ def get_meal_plan_recipes(request):
     result_df = search_space_df.loc[search_space_df['id'].isin(recipe_list)][get_relevant_columns()]
     return json.loads(result_df.to_json(orient='records'))
 
+def get_meal_plan_dataframe_per_session(user_id, session):
+    recipe_list = load_meal_plan_recipe_list(user_id, session)
+    search_space_df = load_search_space(user_id)
+    result_df = search_space_df.loc[search_space_df['id'].isin(recipe_list)][get_relevant_columns()]
+    return result_df
+
+
 def save_user_exploration_history(user_id, recipe_name, column_name, direction):
     session_name = get_study_settings_value(user_id, 'current_session')
     dict_ = load_user_exploration_history_service(session_name, user_id)
@@ -567,3 +574,7 @@ def log_session_end_logic(request):
     user_id = get_user_id(request)
     current_session = get_study_settings_value(user_id, 'current_session')
     log_session_end_service(user_id,current_session)
+
+def log_download_meal_plan(request):
+    user_id = get_user_id(request)
+    log_download_meal_plan_service(user_id)

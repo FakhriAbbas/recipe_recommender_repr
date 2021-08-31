@@ -161,9 +161,13 @@ def load_dislike_recipe_list(user_id):
         return []
     return json.loads(load_data_from_storage(user_id, current_session + '/' + page_name))
 
-def load_meal_plan_recipe_list(user_id):
+def load_meal_plan_recipe_list(user_id, session = None):
     page_name = 'meal_plan_recipe_list'
-    current_session = get_study_settings_value(user_id, 'current_session')
+    current_session = None
+    if session is None:
+        current_session = get_study_settings_value(user_id, 'current_session')
+    else:
+        current_session = session
     if not check_if_file_exists(user_id, current_session + '/' + page_name):
         return []
     return json.loads(load_data_from_storage(user_id, current_session + '/' + page_name))
@@ -257,6 +261,12 @@ def log_session_end_service(user_id, session_name):
     tmp = list([])
     tmp.append(list_)
     save_data_to_storage(user_id,name,tmp)
+
+def log_download_meal_plan_service(user_id):
+    list_ = [datetime.datetime.now().timestamp()]
+    tmp = list([])
+    tmp.append(list_)
+    save_data_to_storage(user_id,'meal_plan_log',tmp)
 
 def get_nutrition_col():
     return [ 'fatContent_n', 'carbohydrateContent_n', 'sugarContent_n', 'calories_n', 'fiberContent_n', 'cholesterolContent_n', 'sodiumContent_n', 'proteinContent_n']

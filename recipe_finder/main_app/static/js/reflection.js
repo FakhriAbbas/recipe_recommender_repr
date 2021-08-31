@@ -1,5 +1,8 @@
 $( document ).ready(function() {
 
+    function show_notify_message(){
+        $.notify("Before you proceed, make sure to answer all questions", "error");
+    }
 
     $('#reflection-btn').click(function (event) {
         var q1_value = $('input[name="q1"]:checked').val();
@@ -18,10 +21,21 @@ $( document ).ready(function() {
         console.log(q6_value)
         console.log(q7_value)
 
-        if(VALIDATION){
-            // TODO
+        if( !q1_value | !q2_value | !q3_value | !q4_value | !q5_value | !q6_value | !q7_value){
+            show_notify_message();
+            return;
         }
-        $.LoadingOverlay("show");
+        $.LoadingOverlay("show", {
+            image       : "",
+            text        : "Loading..."
+        });
+        setTimeout(function(){
+            $.LoadingOverlay("text", "Preparing results...");
+        }, 2500);
+        setTimeout(function(){
+            $.LoadingOverlay("text", "Yep, still loading...");
+        }, 7000);
+
 
         $.ajax({
          type: 'POST',

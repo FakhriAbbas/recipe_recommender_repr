@@ -28,23 +28,15 @@
     </div>
     <div class="row">
         <div class="col-md-8">
-            <b>Prepration time:</b> {{item.totalTimeInMinutes}} minutes
+            <b>Preparation time:</b> {{item.totalTimeInMinutes}} minutes
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            {% if item.piquant_n %}
                 <a id="flavour-collapse-{{item.id}}" data-toggle="collapse" data-target="#flavour-collapse-{{item.id}}-{{model}}" recipe-id="{{item.id}}" >Recipe flavour [+]</a>
-            {% else %}
-                <a class="disabled">Recipe flavour (Not Available)</a>
-            {% endif %}
         </div>
         <div class="col-md-6">
-            {% if item.calories_n %}
                 <a id="nutrition-collapse-{{item.id}}" data-toggle="collapse" data-target="#nutrition-collapse-{{item.id}}-{{model}}" recipe-id="{{item.id}}">Recipe Nutritional info [+]</a>
-            {% else %}
-                <a class="disabled">Recipe Nutritional info (Not Available)</a>
-            {% endif %}
         </div>
     </div>
 
