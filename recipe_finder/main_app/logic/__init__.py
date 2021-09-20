@@ -578,3 +578,6 @@ def log_session_end_logic(request):
 def log_download_meal_plan(request):
     user_id = get_user_id(request)
     log_download_meal_plan_service(user_id)
+
+def save_comment_text(user_id, text_comment):
+    save_data_to_storage(user_id, 'comment' ,text_comment)

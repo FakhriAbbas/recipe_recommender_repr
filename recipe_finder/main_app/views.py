@@ -259,3 +259,10 @@ def download_meal_plan(request):
         writer.writerow([row['recipeName'], row['url']])
     return response
 
+def submit_comment(request):
+    comment_text = request.POST.get("comment_text", "")
+    user_id = get_user_id(request)
+    save_comment_text(user_id, comment_text)
+    response = {}
+    response['status'] = 1
+    return HttpResponse(json.dumps(response), content_type="application/json")

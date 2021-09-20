@@ -22,6 +22,9 @@
     color: #db0909;
 }
 
+.regular-text{
+    color: #000000;
+}
 hr{
     height: 1px;
     background-color: #87a5ae;

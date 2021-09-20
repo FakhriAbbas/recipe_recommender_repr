@@ -5,6 +5,10 @@
   Thank You!
 {% endblock %}
 
+{%block javascript_block%}
+  <script src="{% static 'js/thank_you.js' %}"></script>
+{%endblock%}
+
 {% block page_direction %}
 {% endblock %}
 
@@ -20,22 +24,24 @@
             <br>
             <br>
             <p class="text-justify intro-text">
-              Thanks for taking time and participate in the study. Please send the confirmation code to the researcher.
+              Thanks for taking time and participate in the study. Please send the confirmation code to the researcher, using the following email: <a>fabbas1@uncc.edu</a>
               </br>
               </br>
               Code: <span class="important-text">{{code}} </span>
             </p>
-            <p>
-                Use the following email: <a>fabbas1@uncc.edu</a>
-            </p>
             <p style="background-color: #e79473;">
                 <a href='{% url 'download_meal_plan' %}'>Click here </a> to download a comprehensive list of recipes you have added to the meal plan during the study.
-
             </p>
+            <p>
+                If you would like to leave feedback, please use the textbox below and hit submit.
+                <br>
+                <textarea id="comment-txt" rows="10" cols="50"></textarea>
+                <button id='comment-btn' class="btn btn-primary" style="width: 100%">Submit comment</button>
+            </p>
+
           </span>
           </div>
 
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/gEP7p_WzCkQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
         </div>
       </div>
