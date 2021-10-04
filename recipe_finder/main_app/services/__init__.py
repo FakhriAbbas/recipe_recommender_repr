@@ -303,4 +303,14 @@ def get_distance_tree(request, current_type, current_session):
         distance_tree = pickle.load(file)
     return distance_tree
 
-
+def log_algorithm_time(user_id, session, start_time, end_time):
+    tmp = list([])
+    data = [start_time, end_time]
+    name = session + '/' + 'algorithm_ts'
+    print(user_id,name)
+    if check_if_file_exists(user_id, name):
+        tmp = json.loads(load_data_from_storage(user_id, name))
+        delete_file(user_id, name)
+    tmp.append(data)
+    print(tmp)
+    save_data_to_storage(user_id, name, tmp)

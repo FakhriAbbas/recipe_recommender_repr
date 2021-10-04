@@ -1,5 +1,6 @@
 import pickle
 from django.core.files.storage import default_storage
+from .services import *
 
 ingr_mlb = pickle.load( default_storage.open('./data/pickles/ingr_mlb.pkl', mode='rb') )
 # recommender_df = pickle.load( default_storage.open( './data/pickles/recommender_df.pkl', mode='rb' ) )
@@ -10,6 +11,7 @@ def load_cuisine_data_to_dict(cuisine):
     if cuisine not in cuisine_dict:
         tmp_df = pickle.load(default_storage.open('./data/pickles/cuisine_country_df/recommender_df_' + str(cuisine) + '.pkl' , mode='rb'))
         cuisine_dict[cuisine] = tmp_df
+    print(tmp_df.columns)
 
 def get_cuisine_df(cuisine):
     load_cuisine_data_to_dict(cuisine)
@@ -21,7 +23,6 @@ def get_search_space():
 def load_cuisine_object_data():
     list = pickle.load(default_storage.open('./data/pickles/cuisine_list.pkl', mode='rb'))
     newlist = sorted(list, key=lambda k: k['label'])
-    # exclude the following cuisine
     return newlist
 
 display_name_dict ={

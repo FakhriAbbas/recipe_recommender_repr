@@ -12,6 +12,7 @@ import itertools
 import scipy
 import operator
 import datetime
+import time
 
 def save_pre_survey_process(request):
     response = {}
@@ -81,23 +82,23 @@ def save_reflection_process(request):
     response = {}
     try:
         # read responses
-        q1 = request.POST.get("q1", "")
         q2 = request.POST.get("q2", "")
         q3 = request.POST.get("q3", "")
         q4 = request.POST.get("q4", "")
         q5 = request.POST.get("q5", "")
         q6 = request.POST.get("q6", "")
         q7 = request.POST.get("q7", "")
+        qt = request.POST.get("qt", "")
 
         # prepare data
         data = {}
-        data['q1'] = q1
         data['q2'] = q2
         data['q3'] = q3
         data['q4'] = q4
         data['q5'] = q5
         data['q6'] = q6
         data['q7'] = q7
+        data['qt'] = qt
         current_session = get_study_settings_value(get_user_id(request),'current_session')
 
         # save data
@@ -112,7 +113,7 @@ def save_reflection_process(request):
         elif current_session == 'session_3':
             response['redirect-url'] = reverse('session_4')
         else:
-            response['redirect-url'] = reverse('thank_you')
+            response['redirect-url'] = reverse('open_ended_feedback') #reverse('thank_you')
         return response
     except Exception as e:
         # prepare failure response
@@ -120,18 +121,22 @@ def save_reflection_process(request):
 
 def init_recommendation(request, current_session, current_type):
     context = {}
-    add_to_study_settings(get_user_id(request), 'current_session' , current_session)
-    add_to_study_settings(get_user_id(request), 'session_counter' , 1)
-    add_to_study_settings(get_user_id(request), 'current_counter' , 1)
+    user_id = get_user_id(request)
+    add_to_study_settings(user_id, 'current_session' , current_session)
+    add_to_study_settings(user_id, 'session_counter' , 1)
+    add_to_study_settings(user_id, 'current_counter' , 1)
     if request.is_ajax():
         pass
     else:
+        session_counter = get_study_settings_value(user_id, 'session_counter')
+        current_session = get_study_settings_value(user_id, 'current_session')
         result_json, result_df, search_space_df = init_critique_recommender(request,current_type)
         distance_tree = get_distance_tree(request,current_type,current_session)
+        start_time = datetime.datetime.now().timestamp()
         result_json = generate_critique_diverstiy(result_df, search_space_df, current_type, distance_tree)
+        end_time = datetime.datetime.now().timestamp()
+        log_algorithm_time(user_id, current_session, start_time, end_time)
 
-        session_counter = get_study_settings_value(get_user_id(request), 'session_counter')
-        current_session = get_study_settings_value(get_user_id(request), 'current_session')
         save_data_to_storage(get_user_id(request),
                              current_session  + '/' + str(session_counter),
                              result_json )
@@ -201,8 +206,8 @@ def intra_list_similarity(ids , metric_, matrix_, opposite = False):
         dist_sum = dist + dist_sum
         i = i + 1
     length = len(ids)
-    factor = length*(length - 1)/2
-    return dist_sum/i
+    factor = length*(length - 1)
+    return dist_sum/factor
 
 def transform_to_categorical(df,critique_columns):
     for col in critique_columns:
@@ -219,7 +224,6 @@ def get_diverse_recipes(data_df, distance_tree, s_index, repr_columns):
     recipe_list = list()
     recipe_list.append(s_index)
     for i in range(0, 10):
-        # print(data_df[data_df.index == s_index][repr_columns])
         dist, idx = distance_tree.query(data_df[data_df.index == s_index][repr_columns],k=length)
         ordered_list = idx[0]
         for s_i in range(1, len(ordered_list)):
@@ -250,7 +254,6 @@ def generate_critique_diverstiy(result_df, search_space_df, current_type, distan
     representation_columns = get_current_type_columns(current_type)
     data_df = search_space_df[representation_columns]
     for index, row in top_n_recipe.iterrows():
-        print('index ==========>', index)
         df_critique = pd.DataFrame(columns=['column_name', 'display_name', 'direction'])
         farthest_recipes_idx_list = get_diverse_recipes(data_df, distance_tree, index, representation_columns)
         diverse_df = search_space_df[search_space_df.index.isin(farthest_recipes_idx_list)]
@@ -581,3 +584,6 @@ def log_download_meal_plan(request):
 
 def save_comment_text(user_id, text_comment):
     save_data_to_storage(user_id, 'comment' ,text_comment)
+
+def save_feedback_text(user_id, text_comment):
+    save_data_to_storage(user_id, 'open_ended_feedback', text_comment)

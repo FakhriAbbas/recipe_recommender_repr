@@ -105,7 +105,10 @@ def submit_load_more(request):
         current_type = get_study_settings_value(user_id,'current_type')
         current_session = get_study_settings_value(user_id, 'current_session')
         distance_tree = get_distance_tree(request=request,current_type=current_type, current_session=current_session)
+        start_time = datetime.datetime.now().timestamp()
         result_json = generate_critique_diverstiy(result_df, search_space, current_type, distance_tree)
+        end_time = datetime.datetime.now().timestamp()
+        log_algorithm_time(user_id, current_session, start_time, end_time)
         template = get_template("main_app/includes/recipe_list_critique.html")
         response['list-content'] = template.render({'items': result_json }, request)
         template = get_template("main_app/includes/critique_header.html")
@@ -218,7 +221,20 @@ def session_reflection(request):
 def thank_you(request):
     context = {}
     context['code'] = get_user_id(request)
+    delete_file(get_user_id(request), 'search_space.pkl')
     return render(request, 'main_app/thank_you.html', context = context)
+
+def open_ended_feedback(request):
+    if(request.is_ajax()):
+        comment_text = request.POST.get("comment_text", "")
+        user_id = get_user_id(request)
+        save_feedback_text(user_id, comment_text)
+        response = {}
+        response['redirect-url'] = reverse('thank_you')
+        response['status'] = 1
+        return HttpResponse(json.dumps(response), content_type="application/json")
+    else:
+        return render(request, 'main_app/open_ended_feedback.html')
 
 def log_recipe_flavour_nutrition(request):
     log_recipe_flavour_nutrition_logic(request)

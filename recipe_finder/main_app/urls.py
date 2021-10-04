@@ -26,4 +26,5 @@ urlpatterns = [
     path('download_meal_plan', views.download_meal_plan, name='download_meal_plan'),
     path('video_tutorial', views.video_tutorial, name='video_tutorial'),
     path('submit_comment', views.submit_comment, name='submit_comment'),
+    path('open_ended_feedback', views.open_ended_feedback, name='open_ended_feedback'),
 ]

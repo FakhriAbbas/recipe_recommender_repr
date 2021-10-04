@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block page_title %}
-  Thank You!
+  Feedback!
 {% endblock %}
 
 {%block javascript_block%}
-  <script src="{% static 'js/thank_you.js' %}"></script>
+  <script src="{% static 'js/feedback.js' %}"></script>
 {%endblock%}
 
 {% block page_direction %}
@@ -20,20 +20,16 @@
         <div class="col-md-4">
           <div class="row">
           <span>
-            <h3>Thank You!</h3>
-            <br>
-            <br>
-            <p class="text-justify intro-text">
-              Thanks for taking time and participate in the study. Please send the confirmation code to the researcher, using the following email: <a>fabbas1@uncc.edu</a>
-              </br>
-              </br>
-              Code: <span class="important-text">{{code}} </span>
+            <p style="background-color: #e79473;">
+                <a href='{% url 'download_meal_plan' %}'>Click here </a> to download a comprehensive list of recipes you have added to the meal plan during the study.
             </p>
-            <p>
-                If you would like to leave feedback, please use the textbox below and hit submit.
-                <br>
+
+            <p class="text-justify intro-text">
+              Was there any information about recipes that you would have liked to see that was missing from the recipe details?
+              </br>
+            </p>
                 <textarea id="comment-txt" rows="10" cols="50"></textarea>
-                <button id='comment-btn' class="btn btn-primary" style="width: 100%">Submit comment</button>
+                <button id='feedback-btn' class="btn btn-primary" style="width: 100%">Submit</button>
             </p>
 
           </span>
