@@ -11,7 +11,6 @@ def load_cuisine_data_to_dict(cuisine):
     if cuisine not in cuisine_dict:
         tmp_df = pickle.load(default_storage.open('./data/pickles/cuisine_country_df/recommender_df_' + str(cuisine) + '.pkl' , mode='rb'))
         cuisine_dict[cuisine] = tmp_df
-    print(tmp_df.columns)
 
 def get_cuisine_df(cuisine):
     load_cuisine_data_to_dict(cuisine)
