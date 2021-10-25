@@ -29,7 +29,7 @@ def index(request,variation):
         [NUT_FLA_CRI, FLA_CRI, ING_CRI, NUT_CRI],
         [NUT_FLA_CRI, FLA_CRI, ING_CRI, NUT_CRI],
         [NUT_FLA_CRI, ING_CRI, NUT_CRI, FLA_CRI],
-        [NUT_FLA_CRI, NUT_CRI, FLA_CRI, NUT_CRI],
+        [NUT_FLA_CRI, ING_CRI, FLA_CRI, NUT_CRI],
         [ING_CRI, NUT_CRI, FLA_CRI, NUT_FLA_CRI],
         [ING_CRI, NUT_CRI, NUT_FLA_CRI, FLA_CRI],
         [ING_CRI, FLA_CRI, NUT_CRI, NUT_FLA_CRI],
