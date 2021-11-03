@@ -8,8 +8,10 @@ import csv
 
 
 def index(request,variation):
+    return maintenance(request)
+
     if 'USER_ID' not in request.session:
-        request.session['USER_ID'] = get_random_string(20)
+        request.session['USER_ID'] = 'XIYXHHPOQZEPRKQTUONC' #get_random_string(20)
 
     variations = [
         [NUT_CRI, FLA_CRI, NUT_FLA_CRI, ING_CRI],
@@ -282,3 +284,6 @@ def submit_comment(request):
     response = {}
     response['status'] = 1
     return HttpResponse(json.dumps(response), content_type="application/json")
+
+def maintenance(request):
+    return render(request, 'main_app/maintenanace.html')

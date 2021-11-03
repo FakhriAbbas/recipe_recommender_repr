@@ -120,7 +120,8 @@ def get_study_settings_value(user_id, value):
         return None
 
 def get_user_id(request):
-    return request.session.get('USER_ID')
+    # return request.session.get('USER_ID')
+    return 'XIYXHHPOQZEPRKQTUONC'
 
 def get_display_name(column_name):
     return display_name_dict[column_name]

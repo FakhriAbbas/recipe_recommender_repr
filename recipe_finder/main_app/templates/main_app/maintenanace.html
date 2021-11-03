@@ -1,0 +1,38 @@
+{% extends "main_app/base.html" %}
+{% load static %}
+
+{% block page_title %}
+  Thank You!
+{% endblock %}
+
+{%block javascript_block%}
+  <script src="{% static 'js/thank_you.js' %}"></script>
+{%endblock%}
+
+{% block page_direction %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+        <div class="col-md-5 offset-md-3">
+          <img class='img-responsive' src='{% static "images/logo.png" %}' alt="My image">
+        </div>
+        <div class="col-md-4">
+          <div class="row">
+          <span>
+            <h3>Thank You!</h3>
+            <br>
+            <br>
+            <p class="text-justify intro-text">
+              Thanks for choosing to participate in the study. We have reached the maximum number of participants. If you have more questions, please feel free to contact Fakhri Abbas <a>fabbas1@uncc.edu</a>
+              </br>
+              </br>
+            </p>
+
+          </span>
+          </div>
+
+
+        </div>
+      </div>
+{% endblock %}

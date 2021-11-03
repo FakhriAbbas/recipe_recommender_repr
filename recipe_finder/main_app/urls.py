@@ -27,4 +27,5 @@ urlpatterns = [
     path('video_tutorial', views.video_tutorial, name='video_tutorial'),
     path('submit_comment', views.submit_comment, name='submit_comment'),
     path('open_ended_feedback', views.open_ended_feedback, name='open_ended_feedback'),
+
 ]
